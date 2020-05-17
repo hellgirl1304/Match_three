@@ -1,0 +1,196 @@
+﻿ body {
+  width:1900px;
+ margin:0 auto;
+ background-color:#FFFFFF ;} 
+
+ .HighMenu {
+  width:1600px;
+  margin-left: 300px;
+ 	display: flex;
+  align-items: center;
+  align-content: center;
+ 	justify-content: space-around;
+  height: 120px;
+  background-color:#F8F8FF;
+  text-align:  center;
+ }
+ .LeftMenu {
+  width:300px;
+ position:absolute;
+  min-height:100%;
+  background-color:#FFFFFF;
+  display: flex;
+  flex-direction: column;
+    justify-content: flex-start;
+ }
+  .MainBlock {
+    margin-left: 300px;
+  width:1600px;
+ position:absolute;
+  min-height:90%;
+  background-color:#E6E6FA;
+  text-decoration: none;
+    font-size: 20px;
+ }
+ .MainText{
+  margin:50px;
+  font-size: 30px;
+  color: #503566;
+ }
+.TextButton:hover{  
+  color:#1e63dc;
+}
+
+
+/* Далее большой кусок для подчеркивания */
+ .HighTitle {
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+    font-size: 30px;
+}
+.HighTitle:before {
+    display: block;
+    position: absolute;
+    content: "";
+    height: 2px;
+    width: 0;
+    background: #ec4444;
+    transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+    left: 50%;
+    bottom: 0;
+}
+.HighTitle:after {
+    display: block;
+    position: absolute;
+    content: "";
+    height: 2px;
+    width: 0;
+    background-color: #ec4444;
+    transition: width 0.3s ease-in-out;
+    left: 50%;
+    bottom: 0;
+}
+.HighTitle:hover:before {
+    width: 50%;
+    left: 0;
+}
+.HighTitle:hover:after {
+    width: 50%;
+}
+
+.LeftTitle {
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+    margin:30px;
+    font-size: 30px;
+    color: #8B008B;
+}
+.LeftTitle:before {
+    display: block;
+    position: absolute;
+    content: "";
+    height: 2px;
+    width: 0;
+    background: #ec4444;
+    transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+    left: 50%;
+    bottom: 0;
+}
+.LeftTitle:after {
+    display: block;
+    position: absolute;
+    content: "";
+    height: 2px;
+    width: 0;
+    background-color: #ec4444;
+    transition: width 0.3s ease-in-out;
+    left: 50%;
+    bottom: 0;
+}
+.LeftTitle:hover:before {
+    width: 50%;
+    left: 0;
+}
+.LeftTitle:hover:after {
+    width: 50%;
+}
+/* Кусок закончился */
+
+
+table {
+  background: #f5ffff;
+  border-collapse: collapse;
+  text-align: left;
+  margin: 30px;
+  border-collapse: collapse;
+  width: 570px;
+}
+
+
+ 
+.withScroll table thead, .withScroll table tbody { display: block; } 
+.withScroll table tbody { height: 300px; overflow: auto; margin-top: -1px; }
+.withScroll table thead td:last-child { width: 100px; }
+
+
+th {
+  border-top: 1px solid #777777;  
+  border-bottom: 1px solid #777777; 
+  box-shadow: inset 0 1px 0 #999999, inset 0 -1px 0 #999999;
+  background: linear-gradient(#9595b6, #5a567f);
+  color: white;
+  padding: 10px 15px;
+  position: relative;
+}
+
+tr:nth-child(odd) {
+  background: #ebf3f9;
+}
+
+ th:first-child {
+  border-left: 1px solid #777777; 
+  border-bottom:  1px solid #777777;
+  box-shadow: inset 1px 1px 0 #999999, inset 0 -1px 0 #999999;
+}
+
+ th:last-child {
+  border-right: 1px solid #777777;
+  border-bottom:  1px solid #777777;
+  box-shadow: inset -1px 1px 0 #999999, inset 0 -1px 0 #999999;
+}
+
+td {
+  border: 1px solid #e3eef7;
+  padding: 10px 15px;
+  position: relative;
+  transition: all 0.5s ease;
+}
+.FormSaleToy{
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+      font-size: 17px;
+}
+
+.printTab {
+  width: 150px;
+  height: 35px;
+  font-size: 20px;
+}
+
+.Vnutr {
+
+  display: flex;
+  width: 300px;
+  flex-direction: row;
+}
+
+.FormToy {
+    font-size: 15px;
+}
+
+.AllForm{
+  font-size: 35px;
+}
