@@ -11,18 +11,12 @@ ini_set('display_errors', 1);
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 	$log = $_POST['log'];
-	$hashPass = $_POST['hashPass'];
-	$text1 = "select dimention_key from users where login = '{$log}' and password_u = '{$hashPass}'";
+	$text1 = "select count(*) cnt from (select dimention_key from users where login = '{$log}') tab";
 	$res = $dbh->query($text1);
 	$res=$res->fetchAll();
-	if ($res != null) {
-		foreach ($res as $key => $value) {
-			$num = "{$value[0]}";
-		}
-		echo "$num";
+	foreach ($res as $key => $value) {
+				$num = "{$value[0]}";
+			
 	}
-	else {
-		echo "0";
-	}
-
+	echo "$num";
 ?>
