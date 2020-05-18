@@ -11,10 +11,21 @@ $("#HighTitle1").click(function (e) {
 
 $("#LeftTitle1").click(function (e) {
             e.preventDefault();
-            $.post("../EntranceForm.php").done(function(result){
-				$("div.MainBlock").empty().append(result);
-			});
+			if (id == 0) {
+				$.post("../EntranceForm.php").done(function(result){
+					$("div.MainBlock").empty().append(result);
+				});
+			}
+			else {
+				$.post("../AddCardForm.php").done(function(result){
+					$("div.MainBlock").empty().append(result);
+				});
+			}
+});
 
+$(document).on('keyup', '#AllCard', function(e) {
+	var Value = $('#AllCard').val();
+    alert(Value);
 });
 
 //Переход на регистрацию
@@ -76,8 +87,15 @@ $(document).on('click', '#Enter', function(e) {
 					alert("Неверный логин или пароль");
 				}
 				else {	
-					alert("Успешно");
 					id = result;
+					localStorage.setItem("id_user", id);
+					$.post("../MyCollection.php",{limit: limit}).done(function(result)
+					{
+						$("div.MainBlock").empty().append(result);
+					}).fail(function(error) {
+						console.log(error.message);
+					});
+					
 				}
 			}).fail(function(error) {
 				console.log(error.message);
