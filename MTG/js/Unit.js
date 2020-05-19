@@ -1,5 +1,6 @@
 var limit = 0;
 var id = 0;
+var lastCardName = "";
 
 $("#HighTitle1").click(function (e) {
             e.preventDefault();
@@ -23,9 +24,28 @@ $("#LeftTitle1").click(function (e) {
 			}
 });
 
-$(document).on('keyup', '#AllCard', function(e) {
-	var Value = $('#AllCard').val();
-    alert(Value);
+//$(document).on('keyup', '#AllCardFind', function(e) {
+	//var Value = $('#AllCardFind').val();
+	//$.post("../AddCardFindForm.php").done(function(result)
+		//			{
+			//			$("div.MainBlock").empty().append(result);
+				//		var cList = document.querySelector("#Options");
+    //cList.remove(0);
+		//			}).fail(function(error) {
+			//			console.log(error.message);
+				//	});
+    //alert(Value);
+//});
+
+//Поиск добавляемой карты
+$(document).on('click', '#FindCard', function(e) {
+	var cardName = $('#AllCardFind').val();
+	limit = 0;
+	lastCardName = cardName;
+	e.preventDefault();
+	$.post("../SelectAddCard.php",{limit:limit, cardName: cardName}).done(function(result){
+				$("div.MainBlock").empty().append(result);
+			});
 });
 
 //Переход на регистрацию
@@ -82,7 +102,7 @@ $(document).on('click', '#Enter', function(e) {
 		var hashPass = shaObj.getHash("HEX");
 		$.post("../Entrance.php",{log: log, hashPass:hashPass}).done(
 			function(result){
-				//Если вернули 0, то что-то неверно в пароле изи логине
+				//Если вернули 0, то что-то неверно в пароле или логине
 				if (result == 0) {
 					alert("Неверный логин или пароль");
 				}
@@ -104,17 +124,32 @@ $(document).on('click', '#Enter', function(e) {
 	else alert("Введите логин и пароль");
 });
 
-$(document).on('click', '#NextPage', function(e) {
-	//var limit = '<?php echo $limit;?>';
-//	var number = $('#NumberSaleToy').val();
+$(document).on('click', '#PredPageAdd', function(e) {
+	e.preventDefault();
+	var cardName = lastCardName;
+	if (limit >= 15) {
+		limit = limit - 15;
+		$.post("../SelectAddCard.php",{limit:limit, cardName: cardName}).done(function(result)
+		{
+			$("div.MainBlock").empty().append(result);
+		}).fail(function(error) {
+			console.log(error.message);
+		});
+	}
+});
+	
+$(document).on('click', '#NextPageAdd', function(e) {
 	e.preventDefault();
 	limit = limit + 15;
-	$.post("../ShowTableAllCard.php",{limit: limit}).done(function(result)
+	var cardName = lastCardName;
+	$.post("../SelectAddCard.php",{limit:limit, cardName: cardName}).done(function(result)
 	{
 		$("div.MainBlock").empty().append(result);
 	}).fail(function(error) {
 		console.log(error.message);
 	});
+});
+	
 //	if (id != '' && number != '') {
 //		$.post("../SaleToy.php",{id: id, number: number}).done(
 //			function(result){
@@ -131,4 +166,3 @@ $(document).on('click', '#NextPage', function(e) {
 //		alert ("Продажа успешно выполнена")
 	//}
 	//alert(limit);
-});
