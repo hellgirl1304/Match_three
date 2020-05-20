@@ -1,57 +1,140 @@
 var limit = 0;
-var id = 0;
 var lastCardName = "";
 
+var modal = document.getElementById("my_modal");
+ var btn = document.getElementById("btn_modal_window");
+ var span = document.getElementsByClassName("close_modal_window")[0];
+
+ span.onclick = function () {
+    modal.style.display = "none";
+ }
+
+ window.onclick = function (event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+//Загрузка страницы
+$(document).ready(function(){
+	var id = localStorage.getItem("id_user");
+	//alert(id);
+	if (id != null) {
+	//Если id сохранен, то перенаправляем на коллекцию
+	$.post("../MyCollection.php", {limit: limit, id:id}).done(function(result){
+		$("div.MainBlock").empty().append(result);
+	});
+	}
+	else {
+		$.post("../Exit.php").done(function(result){
+			$("div.MainBlock").empty().append(result);
+		});
+	}
+	//alert (id);
+	//alert("Загрузка");
+});
+
+// Переход в коллекцию пользователя
 $("#HighTitle1").click(function (e) {
             e.preventDefault();
-             $.post("../ShowTableAllCard.php").done(function(result){
+			var id = localStorage.getItem("id_user");
+			if (id != null) {
+             $.post("../MyCollection.php",{limit: limit, id:id}).done(function(result){
 				$("div.MainBlock").empty().append(result);
 			});
+			}
+			else {
+				$.post("../Exit.php").done(function(result){
+				$("div.MainBlock").empty().append('<p class=\'DopText\'>Необходимо войти</p>'+result);
+			});
+			}
 
 });
 
 $("#LeftTitle1").click(function (e) {
             e.preventDefault();
-			if (id == 0) {
-				$.post("../EntranceForm.php").done(function(result){
-					$("div.MainBlock").empty().append(result);
-				});
-			}
-			else {
+			var id = localStorage.getItem("id_user");
+			if (id != null) {
 				$.post("../AddCardForm.php").done(function(result){
 					$("div.MainBlock").empty().append(result);
 				});
 			}
+			else {
+				$.post("../Exit.php").done(function(result){
+				$("div.MainBlock").empty().append('<p class=\'DopText\'>Необходимо войти</p>'+result);
+			});
+			}
 });
 
-//$(document).on('keyup', '#AllCardFind', function(e) {
-	//var Value = $('#AllCardFind').val();
-	//$.post("../AddCardFindForm.php").done(function(result)
-		//			{
-			//			$("div.MainBlock").empty().append(result);
-				//		var cList = document.querySelector("#Options");
-    //cList.remove(0);
-		//			}).fail(function(error) {
-			//			console.log(error.message);
-				//	});
-    //alert(Value);
-//});
+// Переход в коллекцию с ценами
+$("#LeftTitle2").click(function (e) {
+            e.preventDefault();
+			var id = localStorage.getItem("id_user");
+			if (id != null) {
+             $.post("../MyCollectionWithCost.php",{limit: limit, id:id}).done(function(result){
+				$("div.MainBlock").empty().append(result);
+			});
+			}
+			else {
+				$.post("../Exit.php").done(function(result){
+				$("div.MainBlock").empty().append('<p class=\'DopText\'>Необходимо войти</p>'+result);
+			});
+			}
+
+});
 
 //Поиск добавляемой карты
 $(document).on('click', '#FindCard', function(e) {
 	var cardName = $('#AllCardFind').val();
 	limit = 0;
-	lastCardName = cardName;
-	e.preventDefault();
-	$.post("../SelectAddCard.php",{limit:limit, cardName: cardName}).done(function(result){
+	if (cardName != "") {
+		lastCardName = cardName;
+		e.preventDefault();
+		$.post("../SelectAddCard.php",{limit:limit, cardName: cardName}).done(function(result){
 				$("div.MainBlock").empty().append(result);
 			});
+	}
+	else alert ("Вы ничего не ввели");
 });
+
+
+//Добавление карты
+ function addCard(name, set) {
+	modal.style.display = "block";
+	document.getElementById("modal_text").innerHTML = '<p>Добавить '+name +' из сета ' + set + '</p>';
+	document.getElementById("modal_text").innerHTML += '<p>Введите количество копий</p>';
+	document.getElementById("modal_text").innerHTML += '<input style="width: 100px; height: 25px;" id="NumberCard" name="NumberCard" class="FormToy" maxlength="255" placeholder="Количество"/>';
+	document.getElementById("modal_text").innerHTML += '<p></p><input type="button" id="AddThisCard" onClick = "addCardInDB(\''+name+'\',\''+set+'\')" class ="FormToy" value="Добавить"/>';
+}
+
+//Вставка выбранной карты в базу данных
+function addCardInDB (name, set) {
+	var numberCard = $('#NumberCard').val();
+	if(!numberCard.match(/^\d+$/)){
+        alert('Неверно введено количество');
+    }else{
+		var id = localStorage.getItem("id_user");
+       $.post("../AddCardInDB.php",{id: id, name:name, set:set, numberCard:numberCard}).done(function(result){
+			document.getElementById("modal_text").innerHTML = '<p>' +result+'</p>';
+		});
+    }
+	//alert (name+numberCard);
+	
+}
 
 //Переход на регистрацию
 $(document).on('click', '#Registr', function(e) {
 	e.preventDefault();
 	$.post("../RegistrationForm.php").done(function(result){
+				$("div.MainBlock").empty().append(result);
+			});
+});
+
+//Щелчок на Выход
+$(document).on('click', '#Exit', function(e) {
+	e.preventDefault();
+	localStorage.removeItem("id_user");
+	$.post("../Exit.php").done(function(result){
 				$("div.MainBlock").empty().append(result);
 			});
 });
@@ -107,9 +190,10 @@ $(document).on('click', '#Enter', function(e) {
 					alert("Неверный логин или пароль");
 				}
 				else {	
-					id = result;
+					var id = result;
+					//alert(id);
 					localStorage.setItem("id_user", id);
-					$.post("../MyCollection.php",{limit: limit}).done(function(result)
+					$.post("../MyCollection.php",{limit: limit, id:id}).done(function(result)
 					{
 						$("div.MainBlock").empty().append(result);
 					}).fail(function(error) {
@@ -166,3 +250,4 @@ $(document).on('click', '#NextPageAdd', function(e) {
 //		alert ("Продажа успешно выполнена")
 	//}
 	//alert(limit);
+

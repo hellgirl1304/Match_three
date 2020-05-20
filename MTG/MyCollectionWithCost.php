@@ -13,14 +13,15 @@ ini_set('display_errors', 1);
 	if (empty($_POST))
 		$limit = 0;
 	else $limit = $_POST['limit'];
-	$cardName = $_POST['cardName'];
+	$id = $_POST['id'];
 
-	$text = "select name 'Название карты', ru_name 'Русское название', set_code 'Сет' from card_by_set where name like '%{$cardName}%' or ru_name like '%{$cardName}%' limit {$limit}, 15";
+	$text  = "SELECT cs.name 'Название карты', cs.ru_name 'Русское название', cs.set_code 'Сет', us.number_card 'Количество', round(cs.price*70,2) 'Цена за штуку (руб)', round(cs.price*70*us.number_card,2) 'Общая сумма' FROM user_card us, card_by_set cs 
+WHERE us.id_card = cs.id_card and us.d_user = '{$id}' limit ".$limit.", 15";
 	$res = $dbh->query($text);
 		$res=$res->fetchAll();
-	if ($res == null) echo "<p class=\"MainText\">По вашему запросу в таблице ничего не найдено</p><br>";
+	if ($res == null) echo "<p class=\"MainText\">В вашей коллекции еще нет карт</p><br>";
 		else {
-		$table = "<h2 class=\"MainText\">Найденные карты:</h2>";
+		$table = "<h2 class=\"MainText\">Ваша коллекция:</h2>";
 		$table .= " <table class=\"table\" border=\"1\"> <thead> <tr>";
 		$ind = 0;
 		foreach ($res[0] as $key => $value){
@@ -35,14 +36,15 @@ ini_set('display_errors', 1);
 			for ($i = 0; $i < count($value)/2; $i++) {
 				$table .= "<td>{$value["{$i}"]}</td>";
 			}
-			$table .= "<td><input type=\"button\" 				id=\"AddBut{$ind}\" name=\"AddBut\" class = \"AddBut\"value=\"Добавить\" onClick = \"addCard('{$value[0]}', '{$value[2]}')\"></td></tr>";
-			$ind++;
+			$table .= "</tr>";
 		}
 		$table .= "</tbody></table>";
+		 $table .= "<input type=\"button\" id=\"PredPageCol\" class =\"MainText\" value=\"<=\"/>
+ <input type=\"button\" id=\"NextPageCol\" class =\"MainText\" value=\"=>\"/>
+ <p></p>
+		 <a href=\"GetFile.php?id_user={$id}\" class =\"MainText\">Скачать файл</a>";
 		echo $table;
 	
 }
 ?>
-<input type="button" id="PredPageAdd" class ="MainText" value="<="/>
- <input type="button" id="NextPageAdd" class ="MainText" value="=>"/>
- 
+

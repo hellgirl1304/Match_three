@@ -13,11 +13,13 @@ ini_set('display_errors', 1);
 	if (empty($_POST))
 		$limit = 0;
 	else $limit = $_POST['limit'];
+	$id = $_POST['id'];
 
-	$text = "select name 'Название карты', ru_name 'Русское название', set_code 'Сет' from card_by_set limit ".$limit.", 15";
+	$text  = "SELECT cs.name 'Название карты', cs.ru_name 'Русское название', cs.set_code 'Сет', us.number_card 'Количество' FROM user_card us, card_by_set cs 
+WHERE us.id_card = cs.id_card and us.d_user = '{$id}' limit ".$limit.", 15";
 	$res = $dbh->query($text);
 		$res=$res->fetchAll();
-	if ($res == null) echo "<p class=\"MainText\">По вашему запросу в таблице ничего не найдено (возможно, она пустая) </p><br>";
+	if ($res == null) echo "<p class=\"MainText\">В вашей коллекции еще нет карт</p><br>";
 		else {
 		$table = "<h2 class=\"MainText\">Ваша коллекция:</h2>";
 		$table .= " <table class=\"table\" border=\"1\"> <thead> <tr>";
@@ -41,4 +43,5 @@ ini_set('display_errors', 1);
 	
 }
 ?>
- <input type="button" id="NextPage" class ="printTab" value="=>"/>
+<input type="button" id="PredPageCol" class ="MainText" value="<="/>
+ <input type="button" id="NextPageCol" class ="MainText" value="=>"/>

@@ -7,6 +7,15 @@
 	
 </head>
 <body>
+  <div id="my_modal" class="modal">
+    <div class="modal_content">
+      <span class="close_modal_window">×</span>
+      <div id = "modal_text">
+      	<p>Модальное окно!</p>
+  	   </div>
+    </div>
+  </div>
+
 	<div class = 'LeftMenu'>
 		<img src="images/Emb.jpg" width="250" height="200" alt="Эмблема сайта"> 
 		<a class="LeftTitle" id="LeftTitle1" href="#">Добавить карты</a>
@@ -14,7 +23,11 @@
 	</div>
 	<div class="HighMenu">
 		<a class="HighTitle" id="HighTitle1" href="#">Ваша коллекция</a>
-</div>
+	<div class="Exit">
+		<a  id="Exit" href="#">Выход</a>
+		</div>
+	</div>
+
 
 	<div class="MainBlock"><div class="MainText">
 		<h1 class='AllForm'>Вход</h1>

@@ -4,16 +4,23 @@
  background-color:#FFFFFF ;} 
 
  .HighMenu {
-  width:1600px;
+  width:1550px;
   margin-left: 300px;
  	display: flex;
   align-items: center;
   align-content: center;
-padding: 0 0 0 25px; 
+  justify-content: space-between;
+padding: 0 25px 0 25px; 
   height: 120px;
   background-color:#F8F8FF;
   text-align:  center;
  }
+ .Exit {
+	align-items: stretch;
+  align-content: flex-start;
+    height: 100px;
+ }
+ 
  .LeftMenu {
   width:300px;
  position:absolute;
@@ -193,4 +200,37 @@ td {
 
 .AllForm{
   font-size: 35px;
+}
+
+.DopText{
+  font-size: 25px;
+  padding: 10px 15px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 1000;
+}
+.modal .modal_content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    z-index: 99999;
+}
+.modal .modal_content .close_modal_window {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
 }
