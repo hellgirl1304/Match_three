@@ -20,7 +20,7 @@ WHERE us.id_card = cs.id_card and us.d_user = '{$id}' limit ".$limit.", 15";
 	$res = $dbh->query($text);
 		$res=$res->fetchAll();
 	if ($res == null) echo "<p class=\"MainText\">В вашей коллекции еще нет карт</p><br>";
-		else {
+		else { 
 		$table = "<h2 class=\"MainText\">Ваша коллекция:</h2>";
 		$table .= " <table class=\"table\" border=\"1\"> <thead> <tr>";
 		$ind = 0;

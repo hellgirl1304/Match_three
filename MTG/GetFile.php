@@ -20,7 +20,7 @@
 WHERE us.id_card = cs.id_card and us.d_user = '{$id}' ";
 	$res = $dbh->query($text);
 		$res=$res->fetchAll();
-	if ($res == null) $pdf->Cell(40,10,"{$id}");
+	if ($res == null) $pdf->Cell(40,10,"You have not something card yet");
 		else {
 		$ind = 0;
 		foreach ($res[0] as $key => $value){
@@ -35,7 +35,7 @@ WHERE us.id_card = cs.id_card and us.d_user = '{$id}' ";
 		}
 	}
 
-	$pdf->Output(D, 'fdf.pdf');
+	$pdf->Output(D, 'YourCollection.pdf');
 	
 
 ?>

@@ -15,7 +15,7 @@ ini_set('display_errors', 1);
 	else $limit = $_POST['limit'];
 	$cardName = $_POST['cardName'];
 
-	$text = "select name 'Название карты', ru_name 'Русское название', set_code 'Сет' from card_by_set where name like '%{$cardName}%' or ru_name like '%{$cardName}%' limit {$limit}, 15";
+	$text = "select cs.name 'Название карты', cs.ru_name 'Русское название', cs.set_code 'Сет', ls.name 'Добавление' from card_by_set cs, set_list ls where (cs.name like '%{$cardName}%' or cs.ru_name like '%{$cardName}%' ) and ls.code = cs. set_code limit {$limit}, 15";
 	$res = $dbh->query($text);
 		$res=$res->fetchAll();
 	if ($res == null) echo "<p class=\"MainText\">По вашему запросу в таблице ничего не найдено</p><br>";
@@ -24,16 +24,22 @@ ini_set('display_errors', 1);
 		$table .= " <table class=\"table\" border=\"1\"> <thead> <tr>";
 		$ind = 0;
 		foreach ($res[0] as $key => $value){
-			if ($ind == 0){
-				$table .= "<th>{$key}</th>";
-				$ind++;
+			if ($ind == 0 ){
+				if ($ind != 3) {
+					$table .= "<th>{$key}</th>";
+					$ind++;
+				}
 			} else $ind = 0;
 		}
 		$table .= "</tr></thead><tbody>";
 		foreach ($res as $key => $value) {
 			$table .= "<tr>";
 			for ($i = 0; $i < count($value)/2; $i++) {
-				$table .= "<td>{$value["{$i}"]}</td>";
+				if ($i != 3) {
+					if ($i == 2)
+						$table .= "<td  title = \"{$value[3]}\">{$value["{$i}"]}</td>";
+					else $table .= "<td>{$value["{$i}"]}</td>";
+				}
 			}
 			$table .= "<td><input type=\"button\" 				id=\"AddBut{$ind}\" name=\"AddBut\" class = \"AddBut\"value=\"Добавить\" onClick = \"addCard('{$value[0]}', '{$value[2]}')\"></td></tr>";
 			$ind++;
