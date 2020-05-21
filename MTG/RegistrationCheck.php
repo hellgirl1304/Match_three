@@ -11,7 +11,8 @@ ini_set('display_errors', 1);
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 	$log = $_POST['log'];
-	$text1 = "select count(*) cnt from (select dimention_key from users where login = '{$log}') tab";
+	$email = $_POST['email'];
+	$text1 = "select count(*) cnt from (select dimention_key from users where login = '{$log} ' and  email = '{$email}') tab";
 	$res = $dbh->query($text1);
 	$res=$res->fetchAll();
 	foreach ($res as $key => $value) {

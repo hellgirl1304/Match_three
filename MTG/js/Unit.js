@@ -144,6 +144,8 @@ $(document).on('click', '#Registration', function(e) {
 	var log = $('#RegLogin').val();
 	var pass = $('#RegPassword').val();
 	var cons = $('#RegConsent').val();
+	var email = $('#RegEmail').val();
+	var now = new Date();
 	e.preventDefault();
 	if (log != '' && pass != '' && ($('#RegConsent').is(':checked'))) {
 		var shaObj = new jsSHA("SHA-512", "TEXT");
@@ -151,12 +153,15 @@ $(document).on('click', '#Registration', function(e) {
 		var hashPass = shaObj.getHash("HEX");
 		//alert (log+" "+pass+" "+hashPass);
 		// Проверка, нет ли пользователя с таким логином
-		$.post("../RegistrationCheck.php",{log: log}).done(
+		$.post("../RegistrationCheck.php",{log: log, email:email}).done(
 			function(result){
 				if (result == '0') {
 				// Регистрация
-					$.post("../Registration.php",{log: log,hashPass: hashPass}).done(
+				shaObj.update(email+now);
+				var hashEmail = shaObj.getHash("HEX");
+					$.post("../Registration.php",{log: log,hashPass: hashPass, email:email, hashEmail:hashEmail}).done(
 						function(result){
+							$("div.MainBlock").empty().append(result);
 							$.post("../SuccessfulReg.php").done(function(result){
 							$("div.MainBlock").empty().append(result);
 						});
@@ -165,7 +170,7 @@ $(document).on('click', '#Registration', function(e) {
 				});
 				}
 				else {
-					alert("Пользователь с таким логином уже есть");
+					alert("Пользователь с таким логином и с такой почтой уже есть");
 				}
 			}).fail(function(error) {
 				console.log(error.message);
@@ -234,20 +239,4 @@ $(document).on('click', '#NextPageAdd', function(e) {
 	});
 });
 	
-//	if (id != '' && number != '') {
-//		$.post("../SaleToy.php",{id: id, number: number}).done(
-//			function(result){
-//				alert(result);
-	//			if (result != 'Продажа невозможна, не хватает товара на складе'){
-		//		$.post("../FormSaleToy.php").done(function(result){
-//				$("div.MainBlock").empty().append(result);
-//		}).fail(function(error) {
-//				console.log(error.message);
-//			});}
-//			}).fail(function(error) {
-//				console.log(error.message);
-//			});
-//		alert ("Продажа успешно выполнена")
-	//}
-	//alert(limit);
 
