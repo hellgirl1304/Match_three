@@ -38,7 +38,7 @@ ini_set('display_errors', 1);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $hash = $_GET['hash'];
-    $text = "select dimention_key from users where hash = '{$hash}'";
+    $text = "select dimention_key from users where hash = '{$hash}' and email_conf = 0";
         $res = $dbh->query($text);
         $res=$res->fetchAll();
  
